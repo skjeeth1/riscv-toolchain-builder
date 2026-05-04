@@ -31,7 +31,7 @@ jobs:
         run: |
           cd riscv-gnu-toolchain
           export CXXFLAGS="-O2 -fno-char8_t"
-          make
+          make -j$(nproc)
 
       - name: Compress the Final Toolchain
         run: |
