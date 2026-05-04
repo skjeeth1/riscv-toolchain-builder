@@ -13,7 +13,7 @@ jobs:
       - name: Update System & Install Dependencies
         run: |
           pacman -Syu --noconfirm
-          pacman -S --noconfirm base-devel git python gawk bison flex texinfo tar
+          pacman -S --noconfirm base-devel git tar perl python mpc mpfr gmp texinfo gperf patchutils bc zlib expat libslirp ncurses curl
 
       - name: Clone GNU Toolchain
         run: git clone --depth 1 https://github.com/riscv-collab/riscv-gnu-toolchain
