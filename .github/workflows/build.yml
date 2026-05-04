@@ -24,11 +24,13 @@ jobs:
       - name: Configure Toolchain for rv32ima
         run: |
           cd riscv-gnu-toolchain
-          ./configure --prefix=/opt/riscv32-baremetal --with-arch=rv32ima --with-abi=ilp32 CXXFLAGS="-O2 -fno-char8_t"
+          export CXXFLAGS="-O2 -fno-char8_t"
+          ./configure --prefix=/opt/riscv32-baremetal --with-arch=rv32ima --with-abi=ilp32
 
       - name: Build Toolchain
         run: |
           cd riscv-gnu-toolchain
+          export CXXFLAGS="-O2 -fno-char8_t"
           make
 
       - name: Compress the Final Toolchain
