@@ -1,0 +1,41 @@
+name: Build Bare-Metal RISC-V Toolchain
+
+# Trigger build manually
+on:
+  workflow_dispatch: 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: archlinux:latest 
+
+    steps:
+      - name: Update System & Install Dependencies
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm base-devel git python gawk bison flex texinfo tar
+
+      - name: Clone GNU Toolchain
+        run: git clone --depth 1 https://github.com/riscv-collab/riscv-gnu-toolchain
+
+      - name: Configure Toolchain for rv32ima
+        run: |
+          cd riscv-gnu-toolchain
+          ./configure --prefix=/opt/riscv32-baremetal --with-arch=rv32ima --with-abi=ilp32
+
+      - name: Build Toolchain
+        run: |
+          cd riscv-gnu-toolchain
+          make -j$(nproc)
+
+      - name: Compress the Final Toolchain
+        run: |
+          # Compress the resulting folder so we can download it easily
+          tar -czvf riscv32-baremetal.tar.gz -C /opt riscv32-baremetal
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Arch-RISCV32-Toolchain
+          path: riscv32-baremetal.tar.gz
+          retention-days: 7
