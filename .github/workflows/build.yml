@@ -31,6 +31,7 @@ jobs:
         run: |
           cd riscv-gnu-toolchain
           export CXXFLAGS="-O2 -fno-char8_t"
+          echo "Starting parallel build using $(nproc) cores..."
           make -j$(nproc)
 
       - name: Compress the Final Toolchain
